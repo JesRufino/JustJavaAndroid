@@ -23,6 +23,8 @@ public class TelaInicial extends AppCompatActivity {
         setContentView(R.layout.telainicial);
         Button cadProd = (Button) findViewById(R.id.cadProd);
         Button listProd = (Button) findViewById(R.id.listProd);
+        Button listPed = (Button) findViewById(R.id.listPed);
+
 
         //Botão para Gerar view: Cadastrar Produtos
         cadProd.setOnClickListener(new View.OnClickListener() {
@@ -38,15 +40,30 @@ public class TelaInicial extends AppCompatActivity {
         });
 
         //Botão para Gerar view: Listar Produtos
-        listProd.setOnClickListener(new View.OnClickListener(){
+        listProd.setOnClickListener(new View.OnClickListener() {
 
-            public void onClick(View v){
+            public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(TelaInicial.this, ListarProduto.class);
-                startActivity(intent);            }
+                startActivity(intent);
+            }
+        });
+
+        listPed.setOnClickListener(new View.OnClickListener() {
+
+
+            public void onClick(View v) {
+
+                Intent intent = new Intent();
+                intent.setClass(TelaInicial.this, ListarPedidos.class);
+
+                startActivity(intent);
+            }
         });
 
     }
+
+
 
 
 

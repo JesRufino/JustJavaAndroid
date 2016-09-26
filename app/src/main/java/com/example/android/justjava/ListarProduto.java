@@ -29,9 +29,13 @@ import java.util.Iterator;
 public class ListarProduto extends Activity {
 
     private Produto p = new Produto();
+    private Pedido pedido = new Pedido();
     private ArrayList<Produto> lista_de_produtos= new ArrayList<>();
+    private ArrayList<Produto> lista_do_pedido= new ArrayList<>();
     private ListView listView;
-    ProdutoAdapter adapter;
+    private ProdutoAdapter adapter;
+    private ProdutoAdapter adapter_pedido;
+    private ProdutosDbAdapter Db = new ProdutosDbAdapter();
     DatabaseReference dataBase = FirebaseDatabase.getInstance().getReference().child("Produtos");
 
     @Override
@@ -40,8 +44,12 @@ public class ListarProduto extends Activity {
         setContentView(R.layout.listar_produtos);
         listView = (ListView) findViewById(R.id.listView);
 
+
+
         adapter = new ProdutoAdapter(this, lista_de_produtos);
         listView.setAdapter(adapter);
+
+
 
         dataBase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -61,6 +69,7 @@ public class ListarProduto extends Activity {
             }
         });
 
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -71,7 +80,20 @@ public class ListarProduto extends Activity {
         });
 
 
+
     }
+
+
+
+
+    public void clickFinalizarPedido(View view){
+
+        finalizar_pedido();
+
+    }
+
+
+
 
     private AlertDialog alerta;
 
@@ -96,6 +118,9 @@ public class ListarProduto extends Activity {
 
         builder.setPositiveButton("Pedir", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
+                pedido.setItem_pedido(p);
+                lista_do_pedido.add(p);
+                Toast.makeText(ListarProduto.this, "Produto : "+p.nome+" Adicionado!", Toast.LENGTH_SHORT).show();
 
                 /*
                 status = true;
@@ -122,6 +147,45 @@ public class ListarProduto extends Activity {
         alerta = builder.create();
         //Exibe
         alerta.show();
+    }
+
+    private void finalizar_pedido(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        //define o titulo
+        builder.setTitle("Seu Pedido. Total: "+pedido.getValor_total()+" Reais");
+
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.finalizar_pedido, null);
+        TextView preco_tv = (TextView) view.findViewById(R.id.tv_preco);
+        ListView listViewPedido = (ListView) view.findViewById(R.id.listViewPedido);
+
+        adapter_pedido = new ProdutoAdapter(this,lista_do_pedido);
+        listViewPedido.setAdapter(adapter_pedido);
+
+        builder.setView(view);
+
+        builder.setPositiveButton("Pedir", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                    PedidosDb.inserirDb(pedido);
+                    }
+                });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                    }
+                });
+
+
+
+        //cria o AlertDialog
+        alerta = builder.create();
+        //Exibe
+        alerta.show();
+
+
+
     }
 
 
