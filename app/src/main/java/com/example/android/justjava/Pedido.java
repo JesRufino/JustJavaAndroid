@@ -9,7 +9,8 @@ public class Pedido {
 
     public String nome_cliente;
     public Double valor_total= 0.0;
-    public ArrayList<String> item_pedido = new ArrayList<>();
+    public ArrayList<Produto> item_pedido = new ArrayList<>();
+    //public String item_pedido;
     public String chave;
 
     public Pedido(){
@@ -31,13 +32,13 @@ public class Pedido {
         valor_total += valor_produto;
     }
 
-    public ArrayList<String> getItem_pedido(){
+    public ArrayList<Produto> getItem_pedido(){
         return item_pedido;
     }
 
-   public void setItem_pedido(Produto produto){
-        this.item_pedido.add(produto.getNome().toString());
-        setValor_total(produto.preco);
+   public void setItem_pedido(ArrayList<Produto> produto){
+        this.item_pedido = produto;
+
 
     }
     public String getChave(){

@@ -87,6 +87,7 @@ public class ListarProduto extends Activity {
 
 
     public void clickFinalizarPedido(View view){
+        pedido.setItem_pedido(lista_do_pedido);
 
         finalizar_pedido();
 
@@ -118,7 +119,8 @@ public class ListarProduto extends Activity {
 
         builder.setPositiveButton("Pedir", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
-                pedido.setItem_pedido(p);
+
+                pedido.setValor_total(p.getPreco());
                 lista_do_pedido.add(p);
                 Toast.makeText(ListarProduto.this, "Produto : "+p.nome+" Adicionado!", Toast.LENGTH_SHORT).show();
 
