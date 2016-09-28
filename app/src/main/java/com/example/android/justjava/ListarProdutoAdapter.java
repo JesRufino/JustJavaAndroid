@@ -33,7 +33,7 @@ public class ListarProdutoAdapter extends ArrayAdapter<Pedido> {
         TextView tvNome = (TextView) convertView.findViewById(R.id.tvCliente);
         Button btStatus = (Button) convertView.findViewById(R.id.btStatus);
 
-        tvNome.setText(pedido.chave);
+        tvNome.setText(pedido.nome_cliente);
         if(pedido.status_do_pedido == 0) {
             btStatus.setText("Pendente");
             btStatus.setBackgroundColor(Color.parseColor("#9E9E9E"));

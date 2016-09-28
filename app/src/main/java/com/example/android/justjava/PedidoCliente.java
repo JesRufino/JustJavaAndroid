@@ -87,29 +87,7 @@ public class PedidoCliente extends Activity {
             }
         });
 
-        /*
-        dataBase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Iterator i = dataSnapshot.getChildren().iterator();
-                Pedido pedido ;
-                while (i.hasNext()) {
-                    pedido = ((DataSnapshot)i.next()).getValue(Pedido.class);
-                    if(pedido.nome_cliente!=null) {
-                        if ((pedido.nome_cliente).equals(nome_cliente))
-                            adapter_pedido.add(pedido);
-                    }
-                }
 
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        */
     }
 
 
@@ -122,20 +100,16 @@ public class PedidoCliente extends Activity {
 
         //define o titulo
         builder.setTitle(nome_cliente);
+        builder.setMessage("Acompanhe o andamento do seu pedido!");
 
 
-        builder.setPositiveButton("Pedir", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("OK!", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
 
 
             }
         });
-        //define um botão como negativo.
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface arg0, int arg1) {
 
-            }
-        });
         //cria o AlertDialog
         alerta = builder.create();
         //Exibe

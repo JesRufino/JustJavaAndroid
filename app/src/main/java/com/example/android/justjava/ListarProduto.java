@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +38,7 @@ public class ListarProduto extends Activity {
     private ListView listView;
     private ProdutoAdapter adapter;
     private ProdutoAdapter adapter_pedido;
+    private EditText nome;
     DatabaseReference dataBase = FirebaseDatabase.getInstance().getReference().child("Produtos");
 
     @Override
@@ -44,6 +47,7 @@ public class ListarProduto extends Activity {
         setContentView(R.layout.listar_produtos);
         listView = (ListView) findViewById(R.id.listView);
 
+        inserirNome();
 
 
         adapter = new ProdutoAdapter(this, lista_de_produtos);
@@ -98,6 +102,37 @@ public class ListarProduto extends Activity {
 
     private AlertDialog alerta;
 
+
+    private void inserirNome() {
+        //LayoutInflater é utilizado para inflar nosso layout em uma view.
+        LayoutInflater li = getLayoutInflater();
+
+        View view = li.inflate(R.layout.nome_cliente,null);
+        nome = (EditText) view.findViewById(R.id.nomePessoa);
+        //definimos para o botão do layout um clickListener
+        view.findViewById(R.id.setNome).setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                //exibe um Toast informativo.
+                if (nome.getText().toString().isEmpty())
+                    Toast.makeText(ListarProduto.this, "Informe seu nome!", Toast.LENGTH_LONG).show();
+
+                else {
+                    pedido.nome_cliente = nome.getText().toString();
+                    //desfaz o alerta.
+                    alerta.dismiss();
+                }
+            }
+        });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Insira seu nome");
+        builder.setView(view);
+        alerta = builder.create();
+        alerta.show();
+    }
+
+
     private void exemplo_simples(final int posicao) {
         p = lista_de_produtos.get(posicao);
 
@@ -123,26 +158,14 @@ public class ListarProduto extends Activity {
                 pedido.setValor_total(p.getPreco());
                 lista_do_pedido.add(p);
                 Toast.makeText(ListarProduto.this, "Produto : "+p.nome+" Adicionado!", Toast.LENGTH_SHORT).show();
-
-                /*
-                status = true;
-                dataBase.child(chave).child("status").setValue(status);
-                lista_de_produtos.set(posicao,nome_produto + " : " + status);
-                arrayAdapter.notifyDataSetChanged();
-                Toast.makeText(listarProdutos.this, "Tem!", Toast.LENGTH_SHORT).show();
-                */
+                listView.getChildAt(posicao).setBackgroundColor(Color.parseColor("#4CAF50"));
             }
         });
+
         //define um botão como negativo.
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
-                /*
-                status = false;
-                dataBase.child(chave).child("status").setValue(status);
-                lista_de_produtos.set(posicao,nome_produto + " : " + status);
-                arrayAdapter.notifyDataSetChanged();
-                Toast.makeText(listarProdutos.this, "Não tem!", Toast.LENGTH_SHORT).show();
-                */
+
             }
         });
         //cria o AlertDialog
@@ -167,15 +190,17 @@ public class ListarProduto extends Activity {
         listViewPedido.setAdapter(adapter_pedido);
 
         builder.setView(view);
-        pedido.nome_cliente = "Teste";
         builder.setPositiveButton("Pedir", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-
-                    PedidosDb.inserirDb(pedido);
+                    if(pedido.item_pedido.isEmpty())
+                        Toast.makeText(ListarProduto.this,"Por Favor, faça um Pedido", Toast.LENGTH_SHORT).show();
+                        else {
+                        PedidosDb.inserirDb(pedido);
                         Intent intent = new Intent();
                         intent.setClass(ListarProduto.this, PedidoCliente.class);
-                        intent.putExtra("Chave",pedido.nome_cliente.toString());
+                        intent.putExtra("Chave", pedido.nome_cliente.toString());
                         startActivity(intent);
+                    }
                     }
                 });
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
