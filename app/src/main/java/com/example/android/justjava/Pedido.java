@@ -10,7 +10,7 @@ public class Pedido {
     public String nome_cliente;
     public Double valor_total= 0.0;
     public ArrayList<Produto> item_pedido = new ArrayList<>();
-    //public String item_pedido;
+    public int status_do_pedido=0;
     public String chave;
 
     public Pedido(){
@@ -41,6 +41,9 @@ public class Pedido {
 
 
     }
+    public int getStatus_do_pedido(){return status_do_pedido;}
+    public void setStatus_do_pedido(int status_do_pedido){this.status_do_pedido = status_do_pedido;}
+
     public String getChave(){
         return chave;
     }

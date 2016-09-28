@@ -3,6 +3,7 @@ package com.example.android.justjava;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,7 +36,6 @@ public class ListarProduto extends Activity {
     private ListView listView;
     private ProdutoAdapter adapter;
     private ProdutoAdapter adapter_pedido;
-    private ProdutosDbAdapter Db = new ProdutosDbAdapter();
     DatabaseReference dataBase = FirebaseDatabase.getInstance().getReference().child("Produtos");
 
     @Override
@@ -167,10 +167,15 @@ public class ListarProduto extends Activity {
         listViewPedido.setAdapter(adapter_pedido);
 
         builder.setView(view);
-
+        pedido.nome_cliente = "Teste";
         builder.setPositiveButton("Pedir", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
+
                     PedidosDb.inserirDb(pedido);
+                        Intent intent = new Intent();
+                        intent.setClass(ListarProduto.this, PedidoCliente.class);
+                        intent.putExtra("Chave",pedido.nome_cliente.toString());
+                        startActivity(intent);
                     }
                 });
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

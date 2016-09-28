@@ -1,10 +1,12 @@
 package com.example.android.justjava;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -29,12 +31,23 @@ public class ListarProdutoAdapter extends ArrayAdapter<Pedido> {
         }
         // Lookup view for data population
         TextView tvNome = (TextView) convertView.findViewById(R.id.tvCliente);
-        //  TextView tvDescricao = (TextView) convertView.findViewById(R.id.tvDescricao);
-        // Populate the data into the template view using the data object
-        tvNome.setText(pedido.chave);
+        Button btStatus = (Button) convertView.findViewById(R.id.btStatus);
 
-        // tvDescricao.setText(produto.descricao);
-        // Return the completed view to render on screen
+        tvNome.setText(pedido.chave);
+        if(pedido.status_do_pedido == 0) {
+            btStatus.setText("Pendente");
+            btStatus.setBackgroundColor(Color.parseColor("#9E9E9E"));
+        }
+        else if (pedido.status_do_pedido == 1) {
+            btStatus.setText("Em andamento");
+            btStatus.setBackgroundColor(Color.parseColor("#FFEB3B"));
+        }
+        else {
+            btStatus.setText("Pronto! :D");
+            btStatus.setBackgroundColor(Color.parseColor("#4CAF50"));
+        }
+
+
         return convertView;
     }
 }

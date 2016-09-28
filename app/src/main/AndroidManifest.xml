@@ -18,6 +18,7 @@
         <activity android:name=".CadastrarProduto"/>
         <activity android:name=".ListarProduto"/>
         <activity android:name=".ListarPedidos"/>
+        <activity android:name=".PedidoCliente"/>
     </application>
 
 </manifest>
